@@ -1,0 +1,45 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="ehcache.xsd" updateCheck="true"
+	monitoring="autodetect" dynamicConfig="true">
+	
+	<diskStore path="java.io.tmpdir" />
+	
+	<cache name="carsCache"
+		maxEntriesLocalHeap="100"
+		maxEntriesLocalDisk="1000"
+		eternal="false"
+		timeToIdleSeconds="60"
+		timeToLiveSeconds="120"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off">
+		<persistence strategy="localTempSwap" />
+	</cache>
+	
+	<cache name="carsCacheList"
+		maxEntriesLocalHeap="100"
+		maxEntriesLocalDisk="1000"
+		eternal="false"
+		timeToIdleSeconds="60"
+		timeToLiveSeconds="120"
+		memoryStoreEvictionPolicy="LFU"
+		transactionalMode="off">
+		<persistence strategy="localTempSwap" />
+	</cache>
+	
+	<!--
+	timeToIdleSeconds - max cache live time between requests (if no activity during set time cache will be cleaned); 0 - infinity
+	timeToLiveSeconds - total cache live time; 0 - infinity
+	 
+	memoryStoreEvictionPolicy:
+	* LRU - (default) least recently used
+	* LFU - least frequently used
+	* FIFO - first in first out, the oldest element by creation time
+	
+	persistence/@strategy=
+	* localRestartable - Enables the RestartStore and copies all cache entries (on-heap and/or off-heap) to disk. This option provides fast restartability with fault tolerant cache persistence on disk. This option is available for BigMemory Go only.
+	* localTempSwap - Enables temporary local disk usage. This option provides an extra tier for storage during cache operation, but this disk storage is not persisted. After a restart, the disk tier is cleared of any cache data.
+	* none - Does not offload cache entries to disk. With this option, all of the cache is kept in memory. This is the default mode.
+	* distributed - Defers to the <terracotta> configuration for persistence settings. This option is for BigMemory Max only.
+	-->
+	
+</ehcache>
