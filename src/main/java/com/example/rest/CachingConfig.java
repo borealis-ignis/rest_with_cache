@@ -1,5 +1,6 @@
 package com.example.rest;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -10,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
+//import org.springframework.data.redis.core.RedisTemplate;
 
 @Configuration
 @EnableCaching
@@ -37,18 +38,24 @@ public class CachingConfig extends CachingConfigurerSupport {
 	}
 	
 	//Redis
+	@Value("${redis.hostname:localhost}")
+	private String redisHostName;
+	
+	@Value("${redis.port:6379}")
+	private Integer redisPort;
+	
 	@Bean
 	public JedisConnectionFactory jedisConnectionFactory() {
 		final JedisConnectionFactory jedisConFactory = new JedisConnectionFactory();
-		jedisConFactory.setHostName("localhost");
-		jedisConFactory.setPort(6379);
+		jedisConFactory.setHostName(redisHostName);
+		jedisConFactory.setPort(redisPort);
 	    return jedisConFactory;
 	}
 	
-	@Bean
+	/*@Bean
 	public RedisTemplate<String, Object> redisTemplate() {
 		final RedisTemplate<String, Object> template = new RedisTemplate<>();
 		template.setConnectionFactory(jedisConnectionFactory());
 		return template;
-	}
+	}*/
 }

@@ -19,7 +19,7 @@ public abstract class AbstractRestController {
 		this.carsProcessor = carsProcessor;
 	}
 	
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasAuthority('USER')")
 	@RequestMapping(method = RequestMethod.GET, path = "/getcars")
 	public ResponseEntity<Cars> getCars() {
 		System.out.println("select");
@@ -27,7 +27,7 @@ public abstract class AbstractRestController {
 		return carsProcessor.processGetCars();
 	}
 	
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasAuthority('USER')")
 	@RequestMapping(method = RequestMethod.GET, path = "/getcar")
 	public ResponseEntity<Car> getCar(@RequestParam(value = "id", required = true) final int id) {
 		System.out.println("select id: " + id);

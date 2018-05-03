@@ -77,7 +77,9 @@ public class RedisCarsProcessor extends AbstractCarsProcessor {
 		try {
 			final Car newCar = carsDAO.createCar(car);
 			if (newCar != null) {
-				redisCarsRepo.save(newCar);
+				synchronized (redisCarsRepo) {
+					redisCarsRepo.save(newCar);
+				}
 				return ResponseEntity.status(HttpStatus.CREATED).body(newCar);
 			}
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -91,7 +93,9 @@ public class RedisCarsProcessor extends AbstractCarsProcessor {
 	public ResponseEntity<?> processUpdateCar(final Car car) {
 		try {
 			if (carsDAO.updateCar(car) != null) {
-				redisCarsRepo.save(car);
+				synchronized (redisCarsRepo) {
+					redisCarsRepo.save(car);
+				}
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 			}
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -105,7 +109,9 @@ public class RedisCarsProcessor extends AbstractCarsProcessor {
 	public ResponseEntity<?> processDeleteCar(final int id) {
 		try {
 			if (carsDAO.deleteCar(id)) {
-				redisCarsRepo.delete(id);
+				synchronized (redisCarsRepo) {
+					redisCarsRepo.delete(id);
+				}
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 			}
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
